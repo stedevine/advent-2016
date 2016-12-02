@@ -9,3 +9,4 @@ lazy val root = (project in file(".")).
     javaOptions += "-Xmx1G")
 
   lazy val NoTimeForATaxicab = (project in file ("NoTimeForATaxicab")).dependsOn(root)
+  lazy val BathroomSecurity = (project in file ("BathroomSecurity")).dependsOn(root)
