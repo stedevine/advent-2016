@@ -9,6 +9,32 @@ object Main {
   }
 
   def getShortestPath(input: String): Int = {
-    0
+    // Seems pretty straightforward  - we need to calculate the "taxicab" distance between the source and the destination.
+    // We just need to keep track of our absolute NORTH and EAST values then add them together at the end.
+    var northDistance = 0
+    var eastDistance = 0
+    var currentDirection = "N"
+    for (instruction <- input.split(',')) {
+      // Get direction
+      currentDirection = getDirection(currentDirection, instruction.stripPrefix(" ").take(1))
+      val instructionDistance = instruction.stripPrefix(" ").stripPrefix("R").stripPrefix("L").toInt
+      currentDirection match {
+        case "N" => northDistance += instructionDistance
+        case "S" => northDistance -= instructionDistance
+        case "E" => eastDistance += instructionDistance
+        case "W" => eastDistance -= instructionDistance
+      }
+    }
+    Math.abs(northDistance) + Math.abs(eastDistance)
   }
+
+  def getDirection(currentDirection: String, turn: String): String = {
+    currentDirection match {
+      case "N" => if (turn == "L") "W" else "E"
+      case "S" => if (turn == "L") "E" else "W"
+      case "E" => if (turn == "L") "N" else "S"
+      case "W" => if (turn == "L") "S" else "N"
+    }
+  }
+
 }
