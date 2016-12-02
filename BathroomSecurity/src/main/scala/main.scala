@@ -27,7 +27,11 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
     println(getCodeUpdatedPanel(input))
   }
 
-  val inputPanel = Array(Array(1, 2, 3), Array(4, 5, 6), Array(7, 8, 9))
+  val inputPanel = Array(
+    Array(1, 2, 3),
+    Array(4, 5, 6),
+    Array(7, 8, 9)
+  )
 
   def getCode(input: String): String = {
     var position = (1, 1)
@@ -52,7 +56,43 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
     position
   }
 
+  // zeros are invalid positions, they're used to put the valid values into a 
+  // sqaure.
+  val updatedPanel = Array(
+    Array("0", "0", "1", "0", "0"),
+    Array("0", "2", "3", "4", "0"),
+    Array("5", "6", "7", "8", "9"),
+    Array("0", "A", "B", "C", "0"),
+    Array("0", "0", "D", "0", "0")
+  )
+
   def getCodeUpdatedPanel(input: String): String = {
-    "1"
+    var position = (2, 0)
+    var code = ""
+    for (line <- input.split("\r\n")) {
+      position = getPositionUpdatedPanel(line, position)
+      code += updatedPanel(position._1)(position._2)
+    }
+    code
+  }
+
+  // The limit to which you can move left is determined by the y position:
+  val lLimit = Map(0 -> 2, 1 -> 1, 2 -> 0, 3 -> 1, 4 -> 2)
+  // similarly: 
+  val rLimit = Map(0 -> 2, 1 -> 3, 2 -> 4, 3 -> 3, 4 -> 2)
+  val uLimit = Map(0 -> 2, 1 -> 1, 2 -> 0, 3 -> 1, 4 -> 2)
+  val dLimit = Map(0 -> 2, 1 -> 3, 2 -> 4, 3 -> 3, 4 -> 2)
+
+  def getPositionUpdatedPanel(line: String, startPosition: (Int, Int)): (Int, Int) = {
+    var position = startPosition
+    for (instruction <- line) {
+      instruction match {
+        case 'L' => position = (position._1, Math.max(lLimit(position._1), position._2 - 1))
+        case 'R' => position = (position._1, Math.min(rLimit(position._1), position._2 + 1))
+        case 'U' => position = (Math.max(uLimit(position._2), position._1 - 1), position._2)
+        case 'D' => position = (Math.min(dLimit(position._2), position._1 + 1), position._2)
+      }
+    }
+    position
   }
 }

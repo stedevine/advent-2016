@@ -27,4 +27,8 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
     assert(Main.getCodeUpdatedPanel(simpleInput) == "5DB3")
   }
 
+  test("problem input, updated panel") {
+    assert(Main.getCodeUpdatedPanel(problemInput) == "74CD2")
+  }
+
 }
