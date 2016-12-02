@@ -8,4 +8,4 @@ lazy val root = (project in file(".")).
     fork := true,
     javaOptions += "-Xmx1G")
 
-  lazy val NoTimeForATaxiCab = (project in file ("NoTimeForATaxiCab")).dependsOn(root)
+  lazy val NoTimeForATaxicab = (project in file ("NoTimeForATaxicab")).dependsOn(root)

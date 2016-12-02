@@ -48,46 +48,49 @@ object Main {
   def getShortestPathToFirstPlaceVisitedTwice(input: String): Int = {
     // collect the co-ordinates of each place visited (call the first place 0,0).
     // Note, going from 0,0, to 0,3 means we visit 0,0, 0,1 0,2 and 0,3
-    // keep track of the distance
-    // when we visit the same place twice return the distance
-    // Similar technique as above, but we'll use different variable names
+    // Use a set to hold all the positions we visit.
+    // When we visit the same place twice return the distance
     var xPos = 0
     var yPos = 0
     var currentDirection = "N"
     var places = Set[(Int, Int)]((xPos, yPos))
 
     for (instruction <- input.split(',')) {
-      // Get direction
+      // get the direction and the distance, use this to populate the Set of places we've visited.
       currentDirection = getDirection(currentDirection, instruction.stripPrefix(" ").take(1))
       val instructionDistance = instruction.stripPrefix(" ").stripPrefix("R").stripPrefix("L").toInt
       currentDirection match {
-        case "N" => for (yPos <- Range(yPos, (yPos + instructionDistance + 1))) {
+        case "N" => for (y <- Range(yPos, (yPos + instructionDistance))) {
+          yPos = y + 1
           if (places.contains((xPos, yPos))) {
             return Math.abs(xPos) + Math.abs(yPos)
           }
           places += ((xPos, yPos))
         }
-        case "S" => for (yPos <- Range(yPos - 1, (yPos - instructionDistance - 1), -1)) {
+        case "S" => for (y <- Range(yPos, (yPos - instructionDistance), -1)) {
+          yPos = y - 1
           if (places.contains((xPos, yPos))) {
             return Math.abs(xPos) + Math.abs(yPos)
           }
           places += ((xPos, yPos))
         }
-        case "E" => for (xPos <- Range(xPos + 1, (xPos + instructionDistance + 1))) {
+        case "E" => for (x <- Range(xPos, (xPos + instructionDistance))) {
+          xPos = x + 1
           if (places.contains((xPos, yPos))) {
             return Math.abs(xPos) + Math.abs(yPos)
           }
           places += ((xPos, yPos))
         }
-        case "W" => for (xPos <- Range(xPos - 1, (xPos - instructionDistance - 1), -1)) {
+        case "W" => for (x <- Range(xPos, (xPos - instructionDistance), -1)) {
+          xPos = x - 1
           if (places.contains((xPos, yPos))) {
             return Math.abs(xPos) + Math.abs(yPos)
           }
           places += ((xPos, yPos))
         }
       }
-      println("places " + places)
     }
+    // We didn't visit the same place twice (will not happen with supplied input)
     -1
   }
 
