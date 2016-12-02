@@ -1,5 +1,6 @@
 package advent
-
+import scala.collection.mutable.Set
+import scala.util.control.Breaks._
 object Main {
   // No Time for a Taxicab
   def main(args: Array[String]): Unit = {
@@ -45,8 +46,49 @@ object Main {
   }
 
   def getShortestPathToFirstPlaceVisitedTwice(input: String): Int = {
-    //
-    1
-  }
-}
+    // collect the co-ordinates of each place visited (call the first place 0,0).
+    // Note, going from 0,0, to 0,3 means we visit 0,0, 0,1 0,2 and 0,3
+    // keep track of the distance
+    // when we visit the same place twice return the distance
+    // Similar technique as above, but we'll use different variable names
+    var xPos = 0
+    var yPos = 0
+    var currentDirection = "N"
+    var places = Set[(Int, Int)]((xPos, yPos))
 
+    for (instruction <- input.split(',')) {
+      // Get direction
+      currentDirection = getDirection(currentDirection, instruction.stripPrefix(" ").take(1))
+      val instructionDistance = instruction.stripPrefix(" ").stripPrefix("R").stripPrefix("L").toInt
+      currentDirection match {
+        case "N" => for (yPos <- Range(yPos, (yPos + instructionDistance + 1))) {
+          if (places.contains((xPos, yPos))) {
+            return Math.abs(xPos) + Math.abs(yPos)
+          }
+          places += ((xPos, yPos))
+        }
+        case "S" => for (yPos <- Range(yPos - 1, (yPos - instructionDistance - 1), -1)) {
+          if (places.contains((xPos, yPos))) {
+            return Math.abs(xPos) + Math.abs(yPos)
+          }
+          places += ((xPos, yPos))
+        }
+        case "E" => for (xPos <- Range(xPos + 1, (xPos + instructionDistance + 1))) {
+          if (places.contains((xPos, yPos))) {
+            return Math.abs(xPos) + Math.abs(yPos)
+          }
+          places += ((xPos, yPos))
+        }
+        case "W" => for (xPos <- Range(xPos - 1, (xPos - instructionDistance - 1), -1)) {
+          if (places.contains((xPos, yPos))) {
+            return Math.abs(xPos) + Math.abs(yPos)
+          }
+          places += ((xPos, yPos))
+        }
+      }
+      println("places " + places)
+    }
+    -1
+  }
+
+}
