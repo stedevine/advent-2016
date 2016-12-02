@@ -17,7 +17,17 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
     // 7 8 9
     // Starting initially at position 5, read each line of instructions to find the code.
     println(getCode(input))
+    // Part 2
+    // Same rules but the input panel looks like this : 
+    //     1  
+    //   2 3 4
+    // 5 6 7 8 9
+    //   A B C
+    //     D
+    println(getCodeUpdatedPanel(input))
   }
+
+  val inputPanel = Array(Array(1, 2, 3), Array(4, 5, 6), Array(7, 8, 9))
 
   def getCode(input: String): String = {
     var position = (1, 1)
@@ -28,8 +38,6 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
     }
     code
   }
-
-  val inputPanel = Array(Array(1, 2, 3), Array(4, 5, 6), Array(7, 8, 9))
 
   def getPosition(line: String, startPosition: (Int, Int)): (Int, Int) = {
     var position = startPosition
@@ -42,5 +50,9 @@ UDUULLRLUDLLUULRURRUUDDLLLDUURRURURDDRDLRRURLLRURLDDDRRDDUDRLLDRRUDRDRDDRURLULDD
       }
     }
     position
+  }
+
+  def getCodeUpdatedPanel(input: String): String = {
+    "1"
   }
 }
