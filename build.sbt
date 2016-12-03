@@ -10,4 +10,5 @@ lazy val root = (project in file(".")).
 
   lazy val NoTimeForATaxicab = (project in file ("NoTimeForATaxicab")).dependsOn(root)
   lazy val BathroomSecurity = (project in file ("BathroomSecurity")).dependsOn(root)
+  lazy val SquaresWithThreeSides = (project in file ("SqauresWithThreeSides")).dependsOn(root)
   lazy val MedicineForRudolph = (project in file ("MedicineForRudolph")).dependsOn(root)
