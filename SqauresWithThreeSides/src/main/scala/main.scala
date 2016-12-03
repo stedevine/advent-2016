@@ -6,6 +6,7 @@ object Main {
     // Part 1 How many of the input triangles are legal? 
     // The two smaller sides must sum to equal or larger than the longest side
     println(getNumberOfLegalTriangles(Input.problem))
+    // Part 2 The triangles expressed in columns, not rows!
     println(getNumberOfLegalTrianglesVertical(Input.problem))
   }
 
@@ -27,33 +28,33 @@ object Main {
 
     for (i <- Range(0, data.length / 3)) {
 
-      val left1 = data(3 * i).split(" ").filterNot(_ == "")(0).toInt
-      val left2 = data((3 * i) + 1).split(" ").filterNot(_ == "")(0).toInt
-      val left3 = data((3 * i) + 2).split(" ").filterNot(_ == "")(0).toInt
+      val (left1, left2, left3) = getTriangle(data, i, 0)
       if (isLegal(left1, left2, left3)) {
         countOfLegalTriangles += 1
       }
-      val mid1 = data(3 * i).split(" ").filterNot(_ == "")(1).toInt
-      val mid2 = data((3 * i) + 1).split(" ").filterNot(_ == "")(1).toInt
-      val mid3 = data((3 * i) + 2).split(" ").filterNot(_ == "")(1).toInt
+      val (mid1, mid2, mid3) = getTriangle(data, i, 1)
       if (isLegal(mid1, mid2, mid3)) {
         countOfLegalTriangles += 1
       }
-      val right1 = data(3 * i).split(" ").filterNot(_ == "")(2).toInt
-      val right2 = data((3 * i) + 1).split(" ").filterNot(_ == "")(2).toInt
-      val right3 = data((3 * i) + 2).split(" ").filterNot(_ == "")(2).toInt
+      val (right1, right2, right3) = getTriangle(data, i, 2)
       if (isLegal(right1, right2, right3)) {
         countOfLegalTriangles += 1
       }
-
     }
     countOfLegalTriangles
+  }
+
+  def getTriangle(data: Array[String], offset: Int, column: Int): (Int, Int, Int) = {
+    (
+      data(3 * offset).split(" ").filterNot(_ == "")(column).toInt,
+      data((3 * offset) + 1).split(" ").filterNot(_ == "")(column).toInt,
+      data((3 * offset) + 2).split(" ").filterNot(_ == "")(column).toInt
+    )
   }
 
   def isLegal(a: Int, b: Int, c: Int): Boolean = {
     val points = Array(a, b, c)
     val sorted = points.sortWith(_ < _)
-    println(sorted)
 
     (sorted(0) + sorted(1) > sorted(2))
   }
