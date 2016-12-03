@@ -1,7 +1,6 @@
 package advent
 object Input {
-  val problem = """
-330  143  338
+  val problem = """330  143  338
   769  547   83
   930  625  317
   669  866  147
