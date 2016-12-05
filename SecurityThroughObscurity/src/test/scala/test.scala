@@ -10,4 +10,16 @@ class Test extends FunSuite {
     assert(Main.isRealRoom("totally-real-room-200[decoy]") == false)
   }
 
+  test("cycle input") {
+    val roomCode = Main.getRoomCode("qzmt-zixmtkozy-ivhz-343")
+    val shifted = Main.cycle(roomCode, 343)
+    assert(shifted == "veryencryptedname")
+
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 0) == "abcdefghijklmnopqrstuvwxyz")
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 1) == "bcdefghijklmnopqrstuvwxyza")
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 2) == "cdefghijklmnopqrstuvwxyzab")
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 128830) == "abcdefghijklmnopqrstuvwxyz")
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 128831) == "bcdefghijklmnopqrstuvwxyza")
+    assert(Main.cycle("abcdefghijklmnopqrstuvwxyz", 128832) == "cdefghijklmnopqrstuvwxyzab")
+  }
 }
