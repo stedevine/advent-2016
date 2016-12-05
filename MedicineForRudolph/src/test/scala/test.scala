@@ -10,4 +10,10 @@ H => OH
 O => HH"""
     ) == 4)
   }
+
+  test("break up molecule") {
+    val molecule = "LiHCaCKArB"
+    var elements = Main.getElements(molecule)
+    assert(elements.size == 7)
+  }
 }
