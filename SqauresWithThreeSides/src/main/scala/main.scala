@@ -52,7 +52,14 @@ object Main {
     )
   }
 
-  def isLegal(a: Int, b: Int, c: Int): Boolean = {
+   def isLegal((a: Int, b: Int, c: Int)): Boolean = {
+    val points = Array(a, b, c)
+    val sorted = points.sortWith(_ < _)
+
+    (sorted(0) + sorted(1) > sorted(2))
+  }
+}
+def isLegal(a: Int, b: Int, c: Int): Boolean = {
     val points = Array(a, b, c)
     val sorted = points.sortWith(_ < _)
 
