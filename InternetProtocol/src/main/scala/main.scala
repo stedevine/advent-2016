@@ -6,12 +6,24 @@ object Main {
   // Blank
   def main(args: Array[String]): Unit = {
     println(countSupported("/home/stephendevine/advent-2016/InternetProtocol/src/main/scala/input.txt"))
+    println(countSuperSupported("/home/stephendevine/advent-2016/InternetProtocol/src/main/scala/input.txt"))
   }
 
   def countSupported(input: String): Int = {
     var supported = 0
     for (line <- Source.fromFile(input).getLines) {
       if (hasSupport(line)) {
+        supported += 1
+      }
+    }
+
+    supported
+  }
+
+  def countSuperSupported(input: String): Int = {
+    var supported = 0
+    for (line <- Source.fromFile(input).getLines) {
+      if (hasSuperSupport(line)) {
         supported += 1
       }
     }
@@ -90,7 +102,13 @@ object Main {
     println(candidates)
     for (candidate <- candidates) {
       println(candidate)
+      for (supernet <- supernets) {
+        if (supernet.contains(candidate)) {
+          return true
+        }
+      }
     }
+
     false
   }
 
