@@ -9,13 +9,24 @@ class Test extends FunSuite with BeforeAndAfter {
   }
 
   test("rect sample inputs") {
-    assert(Main.getAnswer("rect 1x1") == 1)
-    assert(Main.getAnswer("rect 2x2") == 4)
-    assert(Main.getAnswer("rect 50x6") == 300)
+    Main.updateScreen("rect 1x1")
+    assert(Main.countLitPixels == 1)
+    Main.updateScreen("rect 3x3")
+    assert(Main.countLitPixels == 9)
+    Main.updateScreen("rect 50x6")
+    assert(Main.countLitPixels == 300)
   }
 
   test("rotate commands") {
-    assert(Main.getAnswer("rect 2x2") == 4)
+    Main.updateScreen("rect 2x2")
+    Main.printScreen
+    Main.updateScreen("rotate row x=0 by 98")
+    Main.updateScreen("rotate row x=1 by 98")
+
+    Main.printScreen
+    Main.updateScreen("rotate column y=48 by 10")
+    Main.updateScreen("rotate column y=49 by 10")
+    Main.printScreen
   }
 
 }
