@@ -13,10 +13,19 @@ object Main {
     // what's the minimum number of legal moves to get eveyone to the right side of the river.
 
     // express starting position like this:
-    val start = Vector(1, 1, 0)
-    for (move <-0 getNextMoves(start)){
-      println(move + " " + isMoveLegal(move))
+    var position = Vector(3, 3, 1)
+    println("for position " + position)
+    for (move <- getNextMoves(position)) {
+      val (state, isLegal) = isMoveLegal(position, move)
+      println(move + " to state " + state + " " + isLegal)
+      if (isLegal) {
+        for (nMove <- getNextMoves(state)) {
+          val (nstate, nisLegal) = isMoveLegal(state, nMove)
+          println(nMove + " to state " + nstate + " " + nisLegal)
+        }
+      }
     }
+
     0
   }
 
@@ -27,10 +36,10 @@ object Main {
       // we're going left to right
       for (m <- Range(0, input(0) + 1)) {
         for (c <- Range(0, input(1) + 1)) {
-          val v = Vector(m, c, input(2));W;:w;ZZ
+          val v = Vector(m, c, input(2))
           // must be one or two people in the boat
           if (v(0) + v(1) <= 2 && v(0) + v(1) >= 1) {
-            println(v)
+            //println(v)
             moves = moves :+ v
           }
 
@@ -54,19 +63,17 @@ object Main {
     moves
   }
 
-  
-  def isMoveLegal(input: Vector[Int], move: Vector[Int]): Boolean = {
-    
-    var state : Vector[Int] = null
-    if (input(2) == 1) {
-      state =(input(0) - move(0), input(1) - move(1), input(2) - move(2))
-    } else {
-      state = (input(0) + move(0), input(1) + move(1), input(2) + move(2))
-    }
-    
-    // there cannot be more cannibals than missionaries
+  def isMoveLegal(input: Vector[Int], move: Vector[Int]): (Vector[Int], Boolean) = {
 
-    state(0) >= state(1) 
+    var state: Vector[Int] = null
+    if (input(2) == 1) {
+      state = Vector(input(0) - move(0), input(1) - move(1), input(2) - move(2))
+    } else {
+      state = Vector(input(0) + move(0), input(1) + move(1), input(2) + move(2))
+    }
+
+    // there cannot be more cannibals than missionaries
+    (state, (state(0) >= state(1)))
   }
-  
+
 }
