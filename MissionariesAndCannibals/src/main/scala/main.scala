@@ -14,7 +14,9 @@ object Main {
 
     // express starting position like this:
     val start = Vector(1, 1, 0)
-    getNextMoves(start)
+    for (move <-0 getNextMoves(start)){
+      println(move + " " + isMoveLegal(move))
+    }
     0
   }
 
@@ -25,7 +27,7 @@ object Main {
       // we're going left to right
       for (m <- Range(0, input(0) + 1)) {
         for (c <- Range(0, input(1) + 1)) {
-          val v = Vector(m, c, input(2))
+          val v = Vector(m, c, input(2));W;:w;ZZ
           // must be one or two people in the boat
           if (v(0) + v(1) <= 2 && v(0) + v(1) >= 1) {
             println(v)
@@ -52,16 +54,19 @@ object Main {
     moves
   }
 
-  /*
+  
   def isMoveLegal(input: Vector[Int], move: Vector[Int]): Boolean = {
-    var state = Vector[Int]()
+    
+    var state : Vector[Int] = null
     if (input(2) == 1) {
-      state = input - move
+      state =(input(0) - move(0), input(1) - move(1), input(2) - move(2))
     } else {
-      state = input + move
+      state = (input(0) + move(0), input(1) + move(1), input(2) + move(2))
     }
+    
+    // there cannot be more cannibals than missionaries
 
-    false
+    state(0) >= state(1) 
   }
-  */
+  
 }
