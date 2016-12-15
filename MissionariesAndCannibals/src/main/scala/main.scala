@@ -5,7 +5,7 @@ object Main {
   // https://en.wikipedia.org/wiki/Missionaries_and_cannibals_problem
 
   def main(args: Array[String]): Unit = {
-    println(getAnswer)
+    println("The smallest number of moves to get across the river is : " + getAnswer)
   }
 
   def getAnswer: Int = {
@@ -13,46 +13,37 @@ object Main {
     // what's the minimum number of legal moves to get eveyone to the right side of the river.
 
     // express starting position like this:
-    var position = Vector(3, 3, 1)
+    val startPosition = Vector(3, 3, 1)
+    val endPosition = Vector(0, 0, 0)
+    val allSolutions = Main.solve(List(startPosition), endPosition, List[Vector[Int]](), List[List[Vector[Int]]]())
 
-    0
+    allSolutions.map(item => item.size).sorted.head
   }
 
-  def getPath(startState: Vector[Int], endState: Vector[Int], previousStates: List[Vector[Int]]): List[Vector[Int]] = {
-    var pathLength = 0
-    println("state " + startState + " with previous " + previousStates)
-    // base case - we're at the end state
-    if (startState == endState) {
-      pathLength = 0
+  def solve(states: List[Vector[Int]], goal: Vector[Int], visited: List[Vector[Int]], knownSolutions: List[List[Vector[Int]]]): List[List[Vector[Int]]] = {
+    var solutions = knownSolutions
+    var currentState = states.reverse.head
+    if (currentState == goal) {
+      val solution = states :+ currentState
+      //println(solution)
+      //println(solution.size)
+      solutions = solutions :+ solution
     } else {
       // given where we are, get a list of states to move to next, remove any states we've previously tried
-      val nextStates = getNextStates(startState).filter(!previousStates.contains(_))
+      val nextStates = getNextStates(currentState).filter(!visited.contains(_))
       if (nextStates.size == 0) {
         // can't get there from here
-      }
-      val newPreviousStates = previousStates :+ startState
-      for (nextState <- nextStates) {
-        pathLength += getPathLength(nextState, endState, newPreviousStates)
+
+      } else {
+        val newVisited = visited :+ currentState
+
+        for (nextState <- nextStates) {
+          solutions = solve(states :+ nextState, goal, newVisited, solutions)
+        }
       }
     }
 
-    pathLength
-  }
-
-  def solve(startState: Vector[Int], endState: Vector[Int], previousStates: List[Vector[Int]], solution: List[Vector[Int]]) : (Boolean, List[Vector[Int]]) = {
-    var result = (false, new List[Vector[Int]]())
-    if (startState == endState) {
-        result = (true, solution)
-    } else {
-      val nextStates = getNextStates(startState).filter(!previousStates.contains(_))
-      if (nextStates.size == 0) {
-        result = (false, solution :- startState)
-      }
-      val newPreviousStates = previousStates :+ startState
-      if ()
-    }
-
-    result
+    solutions
   }
 
   def getNextStates(startState: Vector[Int]): List[Vector[Int]] = {

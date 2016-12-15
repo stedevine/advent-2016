@@ -37,15 +37,6 @@ class Test extends FunSuite {
     checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
 
-  test("check ") {
-    val startPosition = Vector(3, 2, 1)
-    val expectedLegalStates = List(
-      Vector(3, 2, 1),
-      Vector(3, 3, 1)
-    )
-    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
-  }
-
   def checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]]): Unit = {
     var legalStates = Main.getNextStates(startPosition)
     assert(legalStates.size == expectedLegalStates.size)
@@ -53,12 +44,13 @@ class Test extends FunSuite {
       assert(legalStates.contains(expectedLegalState))
     }
   }
-  /*
+
   test("test recursive") {
     val startPosition = Vector(3, 3, 1)
-    val endPosition = Vector(2, 2, 0)
-    assert(Main.getPathLength(startPosition, endPosition, List[Vector[Int]]()) == 11)
+    val endPosition = Vector(0, 0, 0)
+    val allSolutions = Main.solve(List(startPosition), endPosition, List[Vector[Int]](), List[List[Vector[Int]]]())
+    println(allSolutions.size)
+
   }
-*/
 
 }
