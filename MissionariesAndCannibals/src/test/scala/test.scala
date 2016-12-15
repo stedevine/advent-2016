@@ -3,51 +3,62 @@ import advent.Main
 
 class Test extends FunSuite {
 
-  test("check the first move") {
+  test("check first next states") {
     val startPosition = Vector(3, 3, 1)
-    val expectedMoves = List(
-      Vector(0, 1, 1),
-      Vector(1, 0, 1),
-      Vector(1, 1, 1),
-      Vector(2, 0, 1),
-      Vector(0, 2, 1)
+    val expectedLegalStates = List(
+      Vector(3, 2, 0),
+      Vector(3, 1, 0),
+      Vector(2, 2, 0)
     )
-    val expectedLegalMoves = List(
-      Vector(0, 1, 1),
-      Vector(1, 1, 1),
-      Vector(0, 2, 1)
+    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
+  }
+  test("check first second next state") {
+    val startPosition = Vector(3, 2, 0)
+    val expectedLegalStates = List(
+      Vector(3, 3, 1)
     )
-
-    checkPositions(startPosition, expectedMoves, expectedLegalMoves)
+    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
+  }
+  test("check second  second next state") {
+    val startPosition = Vector(3, 1, 0)
+    val expectedLegalStates = List(
+      Vector(3, 2, 1),
+      Vector(3, 3, 1)
+    )
+    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
 
-  test("check one of the second moves") {
+  test("check third second next state") {
     val startPosition = Vector(2, 2, 0)
-    val expectedMoves = List(
-      Vector(0, 1, 1),
-      Vector(1, 1, 1),
-      Vector(1, 0, 1)
+    val expectedLegalStates = List(
+      Vector(3, 2, 1),
+      Vector(3, 3, 1)
     )
-    val expectedLegalMoves = List(
-      Vector(1, 0, 1),
-      Vector(1, 1, 1)
-    )
-
-    checkPositions(startPosition, expectedMoves, expectedLegalMoves)
+    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
 
-  def checkPositions(startPosition: Vector[Int], expectedMoves: List[Vector[Int]], expectedLegalMoves: List[Vector[Int]]) = {
-    val nextMoves = Main.getNextMoves(startPosition)
-    assert(nextMoves.size == expectedMoves.size)
-    for (expectedMove <- expectedMoves) {
-      assert(nextMoves.contains(expectedMove))
-    }
+  test("check ") {
+    val startPosition = Vector(3, 2, 1)
+    val expectedLegalStates = List(
+      Vector(3, 2, 1),
+      Vector(3, 3, 1)
+    )
+    checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
+  }
 
-    val legalMoves = nextMoves.filter(Main.isMoveLegal(startPosition, _)._2)
-    assert(legalMoves.size == expectedLegalMoves.size)
-    for (expectedLegalMove <- expectedLegalMoves) {
-      assert(legalMoves.contains(expectedLegalMove))
+  def checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]]): Unit = {
+    var legalStates = Main.getNextStates(startPosition)
+    assert(legalStates.size == expectedLegalStates.size)
+    for (expectedLegalState <- expectedLegalStates) {
+      assert(legalStates.contains(expectedLegalState))
     }
   }
+  /*
+  test("test recursive") {
+    val startPosition = Vector(3, 3, 1)
+    val endPosition = Vector(2, 2, 0)
+    assert(Main.getPathLength(startPosition, endPosition, List[Vector[Int]]()) == 11)
+  }
+*/
 
 }
