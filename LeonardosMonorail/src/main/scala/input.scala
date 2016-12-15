@@ -1,6 +1,6 @@
 package advent
 object Input {
-  val problem = """"cpy 1 a
+  val problem = """cpy 1 a
 cpy 1 b
 cpy 26 d
 jnz c 2

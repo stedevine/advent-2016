@@ -26,7 +26,7 @@ object Main {
     if (currentState == goal) {
       val solution = states :+ currentState
       //println(solution)
-      //println(solution.size)
+      println(solution.size)
       solutions = solutions :+ solution
     } else {
       // given where we are, get a list of states to move to next, remove any states we've previously tried
