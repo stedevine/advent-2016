@@ -1,16 +1,52 @@
 package advent
 object Main {
-  // Maze Of Twisty Little Cubicals
+  // Maze Of Twisty Little Cubicles
   def main(args: Array[String]): Unit = {
 
-    println("'moves' is path length -1")
-    println("shortest path for demo maze " + getShortestPath(getMaze(10, 6, 10), (1, 1), (7, 4)))
+    //println("'moves' is path length -1")
+    //println("shortest path for demo maze " + getShortestPath(getMaze(10, 6, 10), (1, 1), (7, 4)))
     println("shortest path for problem maze " + getShortestPath(getMaze(1352, 41, 41), (1, 1), (31, 39)))
+    // How many unique locations can we reach starting from 1,1 and making no more than 50 moves (the total
+    // path length can be no more than 51)
+    println("number of locations covered " + getNumberOfLocations(getMaze(1352, 41, 41), (1, 1), 51))
   }
 
   type Maze = Array[Array[String]]
   type Position = (Int, Int)
   type Path = List[Position]
+
+  def getNumberOfLocations(maze: Maze, start: Position, maxPathLength: Int): Int = {
+    // get all paths that are maxPathLength or shorter
+    var allPaths = List[Path]()
+
+    def getAllPaths(path: Path, visited: Set[Position]): List[Path] = {
+      if (path.size == maxPathLength) {
+        allPaths = allPaths :+ path
+      } else {
+        val currentPosition = path.reverse.head
+        val nextPositions = getNextPositions(maze, currentPosition).filter(!visited.contains(_))
+        if (nextPositions.size == 0) {
+          // no moves left, path is less than maxLength
+          allPaths = allPaths :+ path
+        } else {
+          for (nextPosition <- nextPositions) {
+            allPaths = getAllPaths(path :+ nextPosition, visited + currentPosition)
+          }
+        }
+
+      }
+      allPaths
+    }
+
+    val paths = getAllPaths(List[Position](start), Set[Position]())
+    // debug number of times each element was reached in our path finding.
+    //val pMap = paths.flatMap(a=>a)
+    //println(pMap.map(b => (pMap.count(_ == b),b)).distinct.sorted.reverse)
+
+    println("total paths less than or equal to " + maxPathLength + " " + paths.size)
+    // For all the paths get the number of unique locations 
+    paths.flatMap(a => a).distinct.size
+  }
 
   def getShortestPath(maze: Maze, start: Position, goal: Position): Int = {
     var solutions = List[Path]()
@@ -28,7 +64,7 @@ object Main {
     }
 
     val allSolutions = getAllSolutions(List[Position](start), Set[Position]())
-    println("there are " + allSolutions.size + "solutions")
+    println("there are " + allSolutions.size + " paths from " + start + " to " + goal)
     val shortestPath = allSolutions.map(p => p.size).sorted.head
     shortestPath
   }
