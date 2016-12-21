@@ -8,11 +8,40 @@ object Main {
     //println(getAnswer(Input.problem))
     //println(getNextPositions(getMaze(10), (6, 5)))
     //println(walkMaze(getMaze(10), List[(Int,Int)]((1, 1)), (7, 4), List[(Int, Int)](), List[List[(Int, Int)]]()))
-    println(solveMaze2(getMaze(1352), List[(Int, Int)]((1, 1)), (31, 39), List[(Int, Int)]()))
+    //println(solveMaze2(getMaze(1352), List[(Int,Int)]((1,1)), (31, 39), List[(Int, Int)]()))
+
+    val sols = solveMaze3(getMaze(10), List[(Int, Int)]((1, 1)), (7, 4), List[(Int, Int)](), List[List[(Int, Int)]]())
+    println(sols)
+    println(sols.map(a => a.size))
+    println(sols.map(a => a.size).sorted.head - 1)
+    //println(solveMaze3(getMaze(10), List[(Int,Int)]((1,1)), (7, 4), List[(Int, Int)](), List[List[(Int,Int)]]()))
   }
 
   def getAnswer(input: String): Int = {
     0
+  }
+
+  def solveMaze3(maze: Array[Array[String]], path: List[(Int, Int)], goal: (Int, Int), visited: List[(Int, Int)], knownSolutions: List[List[(Int, Int)]]): List[List[(Int, Int)]] = {
+    var solutions = knownSolutions
+    //maze(position._2)(position._1) = "O"
+    //println()
+    printMaze(maze)
+    //println(path)
+    val position = path.reverse.head
+    if (position == goal) {
+      println("solved")
+      println(path)
+      println("moves + " + (path.size - 1))
+      solutions = knownSolutions :+ path
+    } else {
+
+      for (nextPosition <- getNextPositions(maze, position).filter(!visited.contains(_))) {
+
+        solutions = solveMaze3(maze, path :+ nextPosition, goal, visited :+ position, solutions)
+      }
+    }
+
+    solutions
   }
 
   def solveMaze2(maze: Array[Array[String]], path: List[(Int, Int)], goal: (Int, Int), visited: List[(Int, Int)]): Int = {
@@ -104,7 +133,7 @@ object Main {
   }
 
   def getMaze(seed: Int): Array[Array[String]] = {
-    var maze = Array.tabulate(41, 41)((x, y) => "x")
+    var maze = Array.tabulate(7, 10)((x, y) => "x")
     for (y <- Range(0, maze.size)) {
       for (x <- Range(0, maze(y).size)) {
         val isOpen = Integer.bitCount(seed + (x * x) + (3 * x) + (2 * x * y) + y + (y * y)) % 2 == 0
