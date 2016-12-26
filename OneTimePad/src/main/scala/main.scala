@@ -3,57 +3,27 @@ import java.security.MessageDigest
 object Main {
   // Blank
   def main(args: Array[String]): Unit = {
-    println(getAnswer(Input.problem))
+    // Print the index of the  64th key for this salt
+    println(getAnswer("abc"))
   }
 
-  type Candidate = (Int, Char)
-
   def getAnswer(input: String): Int = {
-    var candidates = List[Candidate]()
-    var keyIndices = List[Int]()
-    var index = 0
-    while (keyIndices.size < 10) {
-      val hash = getHashAtIndex(index)
-      val tripletValue = getTripletValue(hash)
-      if (!tripletValue.isEmpty) {
-        println("candidate hash : " + hash + "(" + tripletValue.get + ") at index " + index)
-        candidates = candidates :+ (index, tripletValue.get)
-        //println("candidate count " + candidates.size)
+    // build up a map of "characters that are repeated 5 times" to a list of indices at which this happens
+    val qMap = Map[Char, List[Int]]()
+    var qIndex = 0
+    while (qIndex < 10000000) {
+      val hash = getHashAtIndex(input, qIndex)
+      val qChars = getQuintetCharacters(hash)
+      if (!qChars.isEmpty) {
+        println(qIndex.toString + " " + qChars)
       }
-      // for each candidate check
-      // should candidate be removed ? (index > candidate index + 1000)
-      // should candidate be moved to list of keys? (hash contains 5 candidate chars in a row)
-      for (candidate <- candidates) {
-        if (index > candidate._1 + 1000) {
-          println("removing " + candidate)
-          candidates = candidates diff List(candidate)
-        }
-        val quintet = getQuintetValue(hash)
-        if (!quintet.isEmpty) {
-          if (quintet.get == candidate._2) {
-            println("key at : " + candidate._1 + "hash is " + hash)
-            keyIndices = keyIndices :+ candidate._1
-            candidates = candidates diff List(candidate)
-            //println("candidate count " + candidates.size)
-            //println("key count " + keyIndices.size)
-          }
-        }
-      }
-      index += 1
+      qIndex += 1
     }
-
-    println(keyIndices)
-
-    //println(getHashAtIndex(18))
-    //val z :String = "aabbbaacccccbb"
-
-    //  z.sliding(3).filter(a => a.toString.distinct.size ==1).size > 0
 
     0
   }
-  def getHashAtIndex(index: Int): String = {
-    val salt = "abc"
 
+  def getHashAtIndex(salt: String, index: Int): String = {
     MessageDigest.getInstance("MD5").digest((salt + index.toString).getBytes).map("%02x".format(_)).mkString
   }
 
@@ -72,6 +42,11 @@ object Main {
       case false => None
     }
 
+  }
+
+  // Get a list of all of the characters that are repeated 5 or more times
+  def getQuintetCharacters(input: String): List[String] = {
+    input.sliding(5).filter(a => a.toString.distinct.size == 1).map(b => b.toString.head.toString).toList.distinct
   }
 
   /*
