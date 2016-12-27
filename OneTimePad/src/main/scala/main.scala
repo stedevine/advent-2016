@@ -15,11 +15,11 @@ object Main {
     var tIndex = qIndex - 1000
     while (keys.size < 64) {
       if (tIndex >= 0) {
-        var tripletCharacter = getTripletValue(getHashAtIndex(input, tIndex))
+        var tripletCharacter = getTripletValue(getStretchedHashAtIndex(input, tIndex))
         if (!tripletCharacter.isEmpty) {
           // does the triplet value exist in the qMap?
           if (qMap.contains(tripletCharacter.get)) {
-            //   println(tIndex + " " + tripletCharacter.get + " " + qMap(tripletCharacter.get))
+            println(tIndex + " " + tripletCharacter.get + " " + qMap(tripletCharacter.get))
 
             val indexInMap = qMap(tripletCharacter.get).reverse.head
             if (indexInMap - tIndex > 0) {
@@ -30,7 +30,7 @@ object Main {
         }
       }
 
-      val qChars = getQuintetCharacters(getHashAtIndex(input, qIndex))
+      val qChars = getQuintetCharacters(getStretchedHashAtIndex(input, qIndex))
       if (!qChars.isEmpty) {
         //println(qIndex.toString + " " + qChars)
         for (qChar <- qChars) {
@@ -45,13 +45,23 @@ object Main {
       tIndex += 1
     }
     //println(qMap)
-    //println(keys)
-    println(keys(63))
+    println(keys)
+    //println(keys(63))
     keys(63)
   }
 
   def getHashAtIndex(salt: String, index: Int): String = {
     MessageDigest.getInstance("MD5").digest((salt + index.toString).getBytes).map("%02x".format(_)).mkString
+  }
+
+  def getStretchedHashAtIndex(salt: String, index: Int): String = {
+    var hash: String = salt + index.toString
+    for (i <- Range(0, 2017)) {
+      hash = MessageDigest.getInstance("MD5").digest(hash.getBytes).map("%02x".format(_)).mkString
+      //println(hash)
+    }
+
+    hash
   }
 
   def getQuintetValue(input: String): Option[Char] = {
