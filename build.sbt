@@ -6,7 +6,7 @@ lazy val root = (project in file(".")).
     libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.2.6",
     // Start a new JVM so we can control how much memory we use
     fork := true,
-    javaOptions += "-Xmx1G")
+    javaOptions += "-Xmx4G")
 
   lazy val NoTimeForATaxicab = (project in file ("NoTimeForATaxicab")).dependsOn(root)
   lazy val BathroomSecurity = (project in file ("BathroomSecurity")).dependsOn(root)
@@ -23,6 +23,7 @@ lazy val root = (project in file(".")).
   lazy val MazeOfTwistyLittleCubicals = (project in file ("MazeOfTwistyLittleCubicals")).dependsOn(root)
   lazy val OneTimePad = (project in file ("OneTimePad")).dependsOn(root)
   lazy val TimingIsEverything = (project in file ("TimingIsEverything")).dependsOn(root)
+  lazy val DragonChecksum = (project in file ("DragonChecksum")).dependsOn(root)
 
   lazy val MedicineForRudolph = (project in file ("MedicineForRudolph")).dependsOn(root)
 
