@@ -2,8 +2,8 @@ lazy val root = (project in file(".")).
   settings(
     name := "Advent of Code 2016",
     version := "1.0",
-    scalaVersion := "2.10.6",
-    libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.2.6",
+    scalaVersion := "2.12.3",
+    libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.4",
     // Start a new JVM so we can control how much memory we use
     fork := true,
     javaOptions += "-Xmx4G")

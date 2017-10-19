@@ -21,10 +21,10 @@ object Main {
     countLitPixels
   }
 
-  // takes a single command : 
+  // takes a single command :
   // rect 2x4
   // rotate row 4 by 3
-  // rotate column 2 by 9 
+  // rotate column 2 by 9
   def updateScreen(input: String): Unit = {
     val command = input.split(' ')
 
@@ -38,7 +38,7 @@ object Main {
         }
       }
     } else {
-      // rotate command 
+      // rotate command
       val shift = command(4).trim.toInt
 
       if (command(1) == "row") {
@@ -51,7 +51,7 @@ object Main {
         // rotate the column
         val colIndex = command(2).split('=')(1).toInt
 
-        // get the column 
+        // get the column
         var column = new Array[Boolean](screen.size)
         for (i <- Range(0, screen.size)) {
           column(i) = screen(i)(colIndex)
@@ -79,7 +79,7 @@ object Main {
 
   }
 
-  // Debug functions 
+  // Debug functions
   def reset(): Unit = {
     screen = Array.ofDim[Boolean](ySize, xSize)
 

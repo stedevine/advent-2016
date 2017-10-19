@@ -8,23 +8,20 @@ class Test extends FunSuite {
     val expectedLegalStates = List(
       Vector(3, 2, 0),
       Vector(3, 1, 0),
-      Vector(2, 2, 0)
-    )
+      Vector(2, 2, 0))
     checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
   test("check first second next state") {
     val startPosition = Vector(3, 2, 0)
     val expectedLegalStates = List(
-      Vector(3, 3, 1)
-    )
+      Vector(3, 3, 1))
     checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
   test("check second  second next state") {
     val startPosition = Vector(3, 1, 0)
     val expectedLegalStates = List(
       Vector(3, 2, 1),
-      Vector(3, 3, 1)
-    )
+      Vector(3, 3, 1))
     checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
 
@@ -32,8 +29,7 @@ class Test extends FunSuite {
     val startPosition = Vector(2, 2, 0)
     val expectedLegalStates = List(
       Vector(3, 2, 1),
-      Vector(3, 3, 1)
-    )
+      Vector(3, 3, 1))
     checkNextState(startPosition: Vector[Int], expectedLegalStates: List[Vector[Int]])
   }
 
